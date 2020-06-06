@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        .whole {
+            position: relative;
+            overflow: hidden;
+            width: 590px;
+            height: 470px;
+        }
+        
+        .whole {
+            margin: 0 auto;
+        }
+        /* ul.image {
+            position: relative;
+        } */
+        
+        ul.image li {
+            position: absolute;
+            left: 0;
+            opacity: 0;
+        }
+        
+        ul.image li.opa {
+            opacity: 1;
+        }
+        
+        img {
+            width: 100%;
+        }
+        
+        .pre,
+        .next {
+            width: 25px;
+            height: 35px;
+            position: absolute;
+            top: 45%;
+            line-height: 34px;
+            text-align: center;
+            font-size: 15px;
+            color: #fff;
+            cursor: pointer;
+            background-color: rgba(130, 130, 130, 0.5);
+        }
+        
+        .pre {
+            left: -2px;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+        }
+        
+        .next {
+            right: -2px;
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+        }
+        
+        .slider {
+            width: 590px;
+            height: 30px;
+            position: absolute;
+            top: 91%;
+            left: 45px;
+        }
+        
+        .slider li {
+            width: 9px;
+            height: 9px;
+            display: inline-block;
+            line-height: 9px;
+            text-align: center;
+            cursor: pointer;
+            top: 60%;
+            border-radius: 50%;
+            background-color: rgba(200, 200, 200, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="whole" id="whole">
+        <ul id="image" class="image">
+
+            <li><img src="images/1.jpg" alt="" /></li>
+            <li><img src="images/2.jpg" alt="" /></li>
+            <li><img src="images/3.jpg" alt="" /></li>
+            <li><img src="images/4.jpg" alt="" /></li>
+            <li><img src="images/5.jpg" alt="" /></li>
+            <li><img src="images/6.jpg" alt="" /></li>
+            <li><img src="images/7.jpg" alt="" /></li>
+            <li><img src="images/8.jpg" alt="" /></li>
+
+        </ul>
+        <div id="pre" class="pre">
+            <</div>
+                <div id="next" class="next">></div>
+                <div class="slider" id="slider">
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+        </div>
+        <script src="js/jquery.js"></script>
+        <script>
+            //初始化
+            var index = 0;
+            var timer = null;
+            // var t;
+            var length = $('#image li').length;
+
+            go();
+
+            //页面加载后默认是第一张图并改变圆点样式
+            $("#slider li").eq(0).css("backgroundColor", "white");
+            $("#slider li").eq(0).css("border", "2px solid rgba(200, 200, 200, 0.7)");
+
+            $('#image li').eq(index).addClass('opa');
+
+            // 鼠标在图片上悬浮的时候图片停止轮播
+            $("#whole").mouseenter(function() {
+                clearInterval(timer);
+            }).mouseleave(function() {
+                go();
+            })
+
+            //自动切换图片
+            function go() {
+                timer = setInterval(move, 3000);
+
+                function move() {
+                    index++;
+                    if (index >= length)
+                        index = 0;
+                    changeTo(index);
+                }
+            }
+
+            function changeTo(index) {
+                $('#image li').eq(index).addClass('opa').siblings().removeClass('opa');
+                $("#slider li").css("border", "none");
+                $("#slider li").css("backgroundColor", "rgba(200, 200, 200, 0.7)");
+                $('#slider li').eq(index).css("backgroundColor", "white");
+                $("#slider li").eq(index).css("border", "2px solid rgba(200, 200, 200, 0.7)");
+            }
+
+            // 点击向前按钮，图片转到前一张图片
+            $('#pre').click(function() {
+                index--;
+                if (index < 0)
+                    index = length - 1;
+                changeTo(index);
+            });
+
+            // 点击向后按钮，图片转到后一张图片
+            $('#next').click(function() {
+                index++;
+                if (index >= length)
+                    index = 0;
+                changeTo(index);
+            });
+
+            //设置鼠标移上圆点跳转图片
+            $("#slider li").each(function(i) {
+                $(this).mouseover(function() {
+                    index = i;
+                    $("#slider li").css("backgroundColor", "rgba(200, 200, 200, 0.7)");
+                    $("#slider li").css("border", "none");
+                    $("#slider li").eq(index).css("backgroundColor", "white");
+                    $("#slider li").eq(index).css("border", "3px solid rgba(200, 200, 200, 0.7)");
+                    changeTo(index);
+                }).mouseover(function() {
+                    clearInterval(timer);
+                }).mouseleave(function() {
+                    go();
+                })
+            });
+        </script>
+
+</body>
+
+</html>
