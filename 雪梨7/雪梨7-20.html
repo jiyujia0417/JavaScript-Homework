@@ -125,7 +125,6 @@
             //初始化
             var index = 0;
             var timer = null;
-            // var t;
             var length = $('#image li').length;
 
             go();
@@ -191,7 +190,7 @@
                 }).mouseover(function() {
                     clearInterval(timer);
                 }).mouseleave(function() {
-                    go();
+                    changeTo(index);
                 })
             });
         </script>
